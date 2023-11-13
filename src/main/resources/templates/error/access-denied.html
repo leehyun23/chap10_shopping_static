@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/basic}">
+
+<!-- layout Content -->
+<th:block layout:fragment="content">
+	<div class="container">
+		<div class="text-center">
+			<br>
+			<!-- Added text-center class -->
+			<h5 th:text="${error}"></h5>
+			<div style="padding-top: 50px;" class="col">
+				<div class="container text-center">
+					<h3>
+						<span th:text="${username}" class="alert alert-danger">님</span>
+					</h3>
+					<br />
+				</div>
+			</div>
+			<h5>전산센터로 문의하세요.(1234-1234)</h5>
+			<p th:text="${#authentication.principal}"></p>
+		</div>
+	</div>
+</th:block>
+</html>

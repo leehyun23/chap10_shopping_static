@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<div layout:fragment="content">
+
+  <!-- 복합 조회 조건 시작 -->
+  <div class="row mt-3">
+    <form th:action="@{/admin/item/list}" method="get" th:object="${itemSearchDto}">
+      <div class="row">
+        <div class="col">
+          <label for="itemNm">상품명 :</label>
+          <input type="text" id="itemNm" name="itemNm" class="form-control" th:field="*{itemNm}">
+        </div>
+        <div class="col">
+          <label for="itemDetail">상품상세설명 :</label>
+          <input type="text" id="itemDetail" name="itemDetail" class="form-control" th:field="*{itemDetail}" >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="price">상품가격 :</label>
+          <input type="number" id="price" class="form-control" name="price" th:field="*{price}" >
+        </div>
+        <div class="col">
+          <label for="stockNumber">재고수량 :</label>
+          <input type="number" id="stockNumber" class="form-control" name="stockNumber" th:field="*{stockNumber}">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="regDateFrom">상품입고일(from) :</label>
+          <input type="date" id="regDateFrom" name="regDateFrom" class="form-control" th:field="*{receiptDateFrom}">
+        </div>
+        <div class="col">
+          <label for="regDateTo">상품입고일(to) :</label>
+          <input type="date" id="regDateTo" name="regDateTo" class="form-control" th:field="*{receiptDateTo}">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="sellStatCd">판매 상태 :</label>
+          <select id="sellStatCd" th:field="*{sellStatCd}" class="form-control">
+            <option value="">판매 상태 선택</option>
+            <option th:each="status : ${sellStatus}"
+                    th:value="${status}"
+                    th:text="${status}"
+                    th:selected="${status == itemSearchDto.sellStatCd}">SELL</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col text-end">
+          <button class="btn btn-outline-secondary searchBtn" type="submit">검색</button>
+          <button class="btn btn-outline-secondary clearBtn" type="button">Clear</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- 복합 조회 조건 종료 -->
+
+  <!-- 기존 코드 -->
+  <div class="row mt-3">
+    <div class="col">
+      <div class="card">
+        <div class="card-header">
+          Item List
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Item List</h5>
+
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Item Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Stock Number</th>
+              <th scope="col">Sell Status</th>
+              <th scope="col">ReceiptDate</th>
+            </tr>
+            </thead>
+
+            <tbody th:with="link = ${pageRequestDTO.getLink()}">
+            <tr th:each="dto:${responseDTO.dtoList}">
+              <td>[[${dto.id}]]</td>
+              <td>
+                <a th:href="|@{/admin/item/read(id =${dto.id})}&${link}|" class="text-decoration-none"> [[${dto.itemNm}]] </a>
+              </td>
+              <td>[[${dto.price}]]</td>
+              <td>[[${dto.stockNumber}]]</td>
+              <td>[[${dto.itemSellStatus}]]</td>
+              <td>[[${dto.receiptDate}]]</td>
+            </tr>
+            </tbody>
+          </table>
+
+          <div class="float-end">
+            <ul class="pagination flex-wrap">
+              <li class="page-item" th:if="${responseDTO.prev}">
+                <a class="page-link" th:data-num="${responseDTO.start -1}">Previous</a>
+              </li>
+
+              <th:block th:each="i: ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                <li th:class="${responseDTO.page == i}?'page-item active':'page-item'">
+                  <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+                </li>
+              </th:block>
+
+              <li class="page-item" th:if="${responseDTO.next}">
+                <a class="page-link" th:data-num="${responseDTO.end + 1}">Next</a>
+              </li>
+            </ul>
+          </div>
+        </div><!--end card body-->
+      </div><!--end card-->
+    </div><!-- end col-->
+  </div><!-- end row-->
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script layout:fragment="script" th:inline="javascript">
+
+  $(document).ready(function() {
+
+    // 기존에 선택한 판매 상태 값
+    const previousSellStatCd = "[[${itemSearchDto.sellStatCd}]]";
+
+    // 판매 상태 선택 목록
+    const selectElement = $("#sellStatCd");
+
+    // 기존 값이 있다면 선택 목록에서 해당 값 선택
+    if (previousSellStatCd) {
+      selectElement.val(previousSellStatCd);
+    }
+
+    $(".pagination").on("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const target = e.target;
+
+      if(target.tagName !== 'A') {
+        return;
+      }
+
+      const num = target.getAttribute("data-num");
+
+      const formObj = $("form");
+      formObj.append(`<input type='hidden' name='page' value='${num}'>`);
+      formObj.submit();
+    });
+
+    $(".clearBtn").on("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      window.location.href = '/admin/item/list';
+    });
+  });
+</script>
+
