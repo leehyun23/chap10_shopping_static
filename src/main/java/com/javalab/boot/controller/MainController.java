@@ -33,7 +33,9 @@ public class MainController {
                 new SlideDto("images/main01.jpg", "2023 Women Collection Spring", "NEW SEASON", "/item/list"),
                 new SlideDto("images/main02.jpg", "2023 Men New-Season Autumn", "Jackets & Coats",  "/item/list"),
                 new SlideDto("images/main03.jpg", "2023 Men Collection Winter", "New arrivals",  "/item/list"),
-                new SlideDto("images/main04.jpg", "2023 Men Collection Winter", "New arrivals",  "/item/list")
+                new SlideDto("images/main04.jpg", "2023 Men Collection Winter", "New arrivals",  "/item/list"),
+                new SlideDto("images/main05.jpg", "2023 ", "New",  "/item/list"),
+                new SlideDto("images/main06.jpg", "2023 ", "New",  "/item/list")
         );
 
         model.addAttribute("responseDTO", responseDTO);
