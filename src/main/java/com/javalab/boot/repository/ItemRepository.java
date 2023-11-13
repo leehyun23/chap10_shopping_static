@@ -2,6 +2,7 @@ package com.javalab.boot.repository;
 
 import com.javalab.boot.constant.ItemSellStatus;
 import com.javalab.boot.entity.Board;
+import com.javalab.boot.entity.Category;
 import com.javalab.boot.entity.Item;
 import com.javalab.boot.repository.search.ItemSearch;
 import org.springframework.data.domain.Page;
@@ -72,8 +73,9 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemSearch {
     // 판매 상태(SellStatus)를 그룹화하여 가져오는 쿼리
     @Query("SELECT i.itemSellStatus FROM Item i GROUP BY i.itemSellStatus")
     List<ItemSellStatus> findSellStatus();
-
-
+    // 카타고리를 그룹화 하여 가져오는 쿼리
+    @Query("SELECT i.itemSellStatus FROM Item i GROUP BY i.itemSellStatus")
+    List<Category> findCategory();
     // 추가 - 메인 화면 구성용
     // 모든 상품을 최신 입고일 순으로 조회하는 메서드
     Page<Item> findAllByOrderByIdDesc(Pageable pageable);

@@ -30,7 +30,7 @@ public class MainController {
 
         // 슬라이드 정보 세팅
         List<SlideDto> slides = Arrays.asList(
-                new SlideDto("images/main01.jpg", "2023 Women Collection Spring", "NEW SEASON", "/item/list"),
+                new SlideDto("images/main01.jpg", "  ", "NEW SEASON", "/item/list"),
                 new SlideDto("images/main02.jpg", "2023 Men New-Season Autumn", "Jackets & Coats",  "/item/list"),
                 new SlideDto("images/main03.jpg", "2023 Men Collection Winter", "New arrivals",  "/item/list"),
                 new SlideDto("images/main04.jpg", "2023 Men Collection Winter", "New arrivals",  "/item/list"),

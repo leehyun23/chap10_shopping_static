@@ -63,6 +63,16 @@
                    class="fieldError"></div>
             </div>
 
+            <!-- Item Category -->
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="category">Item Category</label>
+              <select id="category" name="category" class="form-control">
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}"></option>
+              </select>
+            </div>
+
             <!-- Item Sell Status -->
             <div class="input-group mb-3">
               <label class="input-group-text" for="sellStatus">Item Sell Status</label>

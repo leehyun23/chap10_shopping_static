@@ -38,12 +38,18 @@
                         <span class="input-group-text">Stock Number</span>
                         <input type="text" class="form-control" th:value="${item.stockNumber}" readonly>
                     </div>
+
                     <!-- Item Detail -->
                     <div class="input-group mb-3">
                         <span class="input-group-text">Item Detail</span>
                         <textarea class="form-control" rows="5" th:field="*{item.itemDetail}" readonly></textarea>
                     </div>
                     <!-- 판매상태 -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Sell Status</span>
+                        <input type="text" class="form-control" th:field="*{item.itemSellStatus}" readonly>
+                    </div>
+
                     <div class="input-group mb-3">
                         <span class="input-group-text">Sell Status</span>
                         <input type="text" class="form-control" th:field="*{item.itemSellStatus}" readonly>

@@ -2,6 +2,7 @@ package com.javalab.boot.service;
 
 import com.javalab.boot.constant.ItemSellStatus;
 import com.javalab.boot.dto.*;
+import com.javalab.boot.entity.Category;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public interface ItemService {
 
     // sellStatus 그룹바이 결과 조회
     List<ItemSellStatus> getSellStatusOptions();
+
+    List<Category> getCategoryOptions();
+
 
     // 메인 화면
     PageResponseDTO<MainItemDto> searchMainPage(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto);

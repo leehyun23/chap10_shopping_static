@@ -2,7 +2,9 @@ package com.javalab.boot.service;
 
 import com.javalab.boot.constant.ItemSellStatus;
 import com.javalab.boot.dto.*;
+import com.javalab.boot.entity.Category;
 import com.javalab.boot.entity.Item;
+import com.javalab.boot.repository.CategoryRepository;
 import com.javalab.boot.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -196,6 +198,14 @@ public class ItemServiceImpl implements ItemService{
         List<ItemSellStatus> sellStatusOptions = itemRepository.findSellStatus();
         return sellStatusOptions;
     }
+
+    @Override
+    public List<Category> getCategoryOptions() {
+        // 레포지토리 레이어를 호출하여 데이터베이스에서 카타고리 값을 가져옵니다.
+        List<Category> categoriesOptions = itemRepository.findCategory();
+        return categoriesOptions;
+    }
+
 
     /**
      * 메인 페이지용 조회

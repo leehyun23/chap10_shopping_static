@@ -1,6 +1,7 @@
 package com.javalab.boot.dto;
 
 import com.javalab.boot.constant.ItemSellStatus;
+import com.javalab.boot.entity.Category;
 import com.javalab.boot.entity.Item;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
@@ -44,6 +45,9 @@ public class ItemFormDTO {
     @NotNull(message = "상품 입고일은 필수 입력 값입니다.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate receiptDate;
+
+    @NotNull(message = "카타고리 입력은 필수 입력 값입니다.")
+    private Category category;
 
     //첨부파일의 이름들
     private List<String> fileNames;
