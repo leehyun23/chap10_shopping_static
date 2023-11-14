@@ -28,6 +28,8 @@ public class ItemSearchDto {
     @Builder.Default
     private String searchQuery = null;
 
+    private Long categoryId;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate receiptDateFrom;
 

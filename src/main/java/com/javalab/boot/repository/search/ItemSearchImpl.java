@@ -224,11 +224,17 @@ public class ItemSearchImpl extends QuerydslRepositorySupport implements ItemSea
             조회조건Builder.and(qItem.itemDetail.contains(itemSearchDto.getItemDetail()));
         }
 
+
         query.where(조회조건Builder);
         //query.where(qItemImg.repimgYn.eq("Y")); // 대표이미지만 선정
 
         // 쿼리 객체에 and 조건 설정
         query.where(qItem.id.gt(0L));
+        // 카타고리 아이디 조건이 있을경우
+        if (itemSearchDto.getCategoryId() != null) {
+            log.info("itemSearchDto.getCategoryId():" + itemSearchDto.getCategoryId());
+            query.where(qItem.category.id.eq(itemSearchDto.getCategoryId()));
+        }
         // 현재 쿼리 객체에 페이징 조건 설정
         this.getQuerydsl().applyPagination(pageable, query);
         // 만들어진 쿼리 객체 실행해서 결과 받아옴

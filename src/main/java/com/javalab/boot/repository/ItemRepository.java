@@ -86,4 +86,8 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemSearch {
     // 최신 상품 조회 메서드
     //Page<Item> findTop6ByOrderByRegisterDateDesc(Pageable pageable);
 
+    // categoryId를 기반으로 아이템을 찾는 메소드를 추가합니다.
+    @Query("SELECT i FROM Item i where i.category= :categoryId")
+    List<Item> findByCategoryId(@Param("categoryId") Long categoryId);
+
 }
