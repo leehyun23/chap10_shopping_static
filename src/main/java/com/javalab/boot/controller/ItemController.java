@@ -3,6 +3,7 @@ package com.javalab.boot.controller;
 import com.javalab.boot.constant.ItemSellStatus;
 import com.javalab.boot.dto.ItemFormDTO;
 import com.javalab.boot.entity.Category;
+import com.javalab.boot.service.CategoryService;
 import com.javalab.boot.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,7 +23,7 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
-
+    private final CategoryService categoryService;
     /**
      * 공통메소드
      *  - ItemSellStatus enum 타입
@@ -36,13 +37,6 @@ public class ItemController {
         return sellStatus;
     }
 
-    @ModelAttribute("category")
-    public List<Category> getcategory() {
-        // 데이터베이스에서 카테고리 값을 읽어옵니다.
-        List<Category> category = itemService.getCategoryOptions();
-        log.info("category : " + category.size());
-        return category;
-    }
 
 
     // 사용자가 상품 주문하기 위해서 보는 상품 상세 화면

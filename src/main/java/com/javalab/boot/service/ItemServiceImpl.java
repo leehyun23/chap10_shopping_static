@@ -27,7 +27,7 @@ public class ItemServiceImpl implements ItemService{
     // 생성자 의존성 주입됨.
     private final ItemRepository itemRepository;
     private final ModelMapper modelMapper;
-
+    private final CategoryRepository categoryRepository;
     /**
      * Item 등록
      */
@@ -199,12 +199,7 @@ public class ItemServiceImpl implements ItemService{
         return sellStatusOptions;
     }
 
-    @Override
-    public List<Category> getCategoryOptions() {
-        // 레포지토리 레이어를 호출하여 데이터베이스에서 카타고리 값을 가져옵니다.
-        List<Category> categoriesOptions = itemRepository.findCategory();
-        return categoriesOptions;
-    }
+
 
 
     /**

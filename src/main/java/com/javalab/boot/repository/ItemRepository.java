@@ -74,7 +74,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemSearch {
     @Query("SELECT i.itemSellStatus FROM Item i GROUP BY i.itemSellStatus")
     List<ItemSellStatus> findSellStatus();
     // 카타고리를 그룹화 하여 가져오는 쿼리
-    @Query("SELECT i.itemSellStatus FROM Item i GROUP BY i.itemSellStatus")
+    @Query("SELECT c FROM Category c")
     List<Category> findCategory();
     // 추가 - 메인 화면 구성용
     // 모든 상품을 최신 입고일 순으로 조회하는 메서드

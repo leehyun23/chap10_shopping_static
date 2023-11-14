@@ -8,15 +8,16 @@ import javax.persistence.*;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category extends BaseEntity{
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private Long id;
 
-    @Column(name = "category_Nm")
+    @Column(name = "category_nm")
     private String name;
+
 
 
 }

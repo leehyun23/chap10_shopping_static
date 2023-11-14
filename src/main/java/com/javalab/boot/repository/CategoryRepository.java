@@ -1,13 +1,19 @@
 package com.javalab.boot.repository;
 
 import com.javalab.boot.entity.Category;
+import com.javalab.boot.entity.Item;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+import java.util.Optional;
+
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    //카테고리를 그룹화 하여 가져오는 쿼리
+    @EntityGraph(attributePaths = {"imageSet"})
+    @Query("select c from Category c where c.id =:id")
+    Optional<Category> findByIdWithImages(@Param("id") Long id);
 
 
 }

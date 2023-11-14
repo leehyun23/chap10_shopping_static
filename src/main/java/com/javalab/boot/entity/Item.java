@@ -1,7 +1,6 @@
 package com.javalab.boot.entity;
 
 import com.javalab.boot.constant.ItemSellStatus;
-import com.javalab.boot.dto.BoardDTO;
 import com.javalab.boot.dto.ItemFormDTO;
 import com.javalab.boot.exception.OutOfStockException;
 import lombok.*;
@@ -78,7 +77,8 @@ public class Item extends BaseEntity {
         this.itemDetail = itemFormDto.getItemDetail();
         this.itemSellStatus = itemFormDto.getItemSellStatus();
         this.receiptDate = itemFormDto.getReceiptDate();
-        this.category = itemFormDto.getCategory();
+        this.category = Category.builder()
+                .id(itemFormDto.getCategoryId()).build();
     }
 
     // 첨부 이미지 추가
@@ -123,7 +123,8 @@ public class Item extends BaseEntity {
                 .price(this.getPrice())
                 .stockNumber(this.getStockNumber())
                 .receiptDate(this.getReceiptDate())
-//                .category(this.category)
+//                .categoryId(this.category.builder().id(itemFormDto.getCategoryId()))
+
                 .build();
 
         // 데이터베이스에 받아온 이미지들을 Dto로 이동

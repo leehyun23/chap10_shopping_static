@@ -1,6 +1,8 @@
 package com.javalab.boot.controller;
 
 import com.javalab.boot.dto.*;
+import com.javalab.boot.entity.Category;
+import com.javalab.boot.service.CategoryService;
 import com.javalab.boot.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,7 @@ import java.util.List;
 public class MainController {
 
     private final ItemService itemService;
-
+    private final CategoryService categoryService;
     @GetMapping("/")
     public String list(@ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO,
                        @ModelAttribute("itemSearchDto") ItemSearchDto itemSearchDto,
@@ -37,12 +39,13 @@ public class MainController {
                 new SlideDto("images/main04.jpg", " ", " ", "/item/list"),
                 new SlideDto("images/main05.jpg", "  ", " ", "/item/list")
                 );
-
+        // 데이터베이스에서 카테고리 값을 읽어옵니다.
+        List<Category> categories = categoryService.getCategoryOptions();
                 model.addAttribute("responseDTO", responseDTO);
                 model.addAttribute("items", items);
                 model.addAttribute("maxPage", 5); // 나중에 수정
         model.addAttribute("slides", slides); // 슬라이드
-
+        model.addAttribute("categories", categories);
         return "main";
     }
 

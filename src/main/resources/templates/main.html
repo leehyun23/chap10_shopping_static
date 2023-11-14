@@ -113,29 +113,43 @@
 
 			<!-- Category -->
 			<div class="flex-w flex-sb-m p-b-52">
+<!--				<div class="flex-w flex-l-m filter-tope-group m-tb-10">-->
+<!--					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">-->
+<!--						모든 상품-->
+<!--					</button>-->
+
+<!--&lt;!&ndash;					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">&ndash;&gt;-->
+<!--					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">-->
+<!--						과일-->
+<!--					</button>-->
+
+<!--					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".men">-->
+<!--						채소-->
+<!--					</button>-->
+
+<!--					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".bag">-->
+<!--						육류-->
+<!--					</button>-->
+
+<!--					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".shoes">-->
+<!--						해산물-->
+<!--					</button>-->
+
+<!--				</div>-->
+
 				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
 					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
 						모든 상품
 					</button>
 
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">
-						과일
-					</button>
-
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".men">
-						채소
-					</button>
-
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".bag">
-						육류
-					</button>
-
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".shoes">
-						해산물
-					</button>
-
+					<!-- 카테고리 목록을 이용하여 동적으로 버튼 생성 -->
+					<th:block th:each="category : ${categories}">
+						<a th:hrep="@{item"
+						<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
+								th:data-filter="${category.name}" th:text="${category.name}">
+						</button>
+					</th:block>
 				</div>
-
 				<div class="flex-w flex-c-m m-tb-10">
 					<a href="#" class="filter-link stext-106 trans-04">
 						낮은 가격순

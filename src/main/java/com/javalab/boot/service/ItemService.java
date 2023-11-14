@@ -22,7 +22,6 @@ public interface ItemService {
     // sellStatus 그룹바이 결과 조회
     List<ItemSellStatus> getSellStatusOptions();
 
-    List<Category> getCategoryOptions();
 
 
     // 메인 화면

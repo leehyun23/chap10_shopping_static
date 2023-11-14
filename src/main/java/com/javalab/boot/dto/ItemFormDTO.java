@@ -47,7 +47,7 @@ public class ItemFormDTO {
     private LocalDate receiptDate;
 
     @NotNull(message = "카타고리 입력은 필수 입력 값입니다.")
-    private Category category;
+    private Long categoryId;
 
     //첨부파일의 이름들
     private List<String> fileNames;

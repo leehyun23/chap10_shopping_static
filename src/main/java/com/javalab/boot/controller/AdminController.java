@@ -5,6 +5,8 @@ import com.javalab.boot.dto.ItemFormDTO;
 import com.javalab.boot.dto.ItemSearchDto;
 import com.javalab.boot.dto.PageRequestDTO;
 import com.javalab.boot.dto.PageResponseDTO;
+import com.javalab.boot.entity.Category;
+import com.javalab.boot.service.CategoryService;
 import com.javalab.boot.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,7 +33,7 @@ import java.util.List;
 public class AdminController {
 
     private final ItemService itemService;
-
+    private final CategoryService categoryService;
     /**
      * 공통메소드
      *  - ItemSellStatus enum 타입
@@ -54,6 +56,11 @@ public class AdminController {
     //@PreAuthorize("hasRole('ADMIN')") // 등록은 관리자만 가능하도록 설정
     @GetMapping("/register")
     public String registerForm(Model model) {
+        // 데이터베이스에서 카테고리 값을 읽어옵니다.
+        List<Category> categories = categoryService.getCategoryOptions();
+
+        log.info("category : " + categories.size());
+        model.addAttribute("categories", categories);
         model.addAttribute("itemFormDTO", new ItemFormDTO());
         return "item/register";
     }
@@ -92,6 +99,9 @@ public class AdminController {
                        @ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO,
                        Model model) {
         ItemFormDTO itemFormDTO = itemService.readOne(id);
+        List<Category> categories = categoryService.getCategoryOptions();
+        log.info("category read : " + categories);
+        model.addAttribute("categories", categories);
         model.addAttribute("item", itemFormDTO);
         return "item/read";
     }
@@ -100,6 +110,8 @@ public class AdminController {
     @GetMapping({"/modify"})
     public String modifyGet(Long id, @ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO, Model model) {
         ItemFormDTO itemFormDTO = itemService.readOne(id);
+        List<Category> categories = categoryService.getCategoryOptions();
+        model.addAttribute("categories", categories);
         model.addAttribute("item", itemFormDTO);
         return "item/modify";
     }
