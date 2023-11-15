@@ -25,7 +25,7 @@ public class CategoryRepositoryTest {
     @DisplayName("상품 저장 테스트")
     public void createCategory(){
         Category category = Category.builder()
-                .name("육류")
+                .name("해산물")
                 .build();
         Category savedCategory = categoryRepository.save(category);
         log.info(savedCategory.toString());

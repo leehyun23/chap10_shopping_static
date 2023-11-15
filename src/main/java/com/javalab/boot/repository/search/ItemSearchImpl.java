@@ -5,6 +5,7 @@ import com.javalab.boot.dto.BoardListReplyCountDTO;
 import com.javalab.boot.dto.ItemSearchDto;
 import com.javalab.boot.dto.MainItemDto;
 import com.javalab.boot.entity.*;
+import com.javalab.boot.repository.ItemRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
@@ -28,7 +29,6 @@ import java.util.List;
  */
 @Log4j2
 public class ItemSearchImpl extends QuerydslRepositorySupport implements ItemSearch {
-
     /**
      * QuerydslRepositorySupport는 엔티티 타입에 따른 Querydsl
      * 쿼리를 작성하게 도와주는데, 생성자에서 사용할 엔티티의
@@ -38,7 +38,6 @@ public class ItemSearchImpl extends QuerydslRepositorySupport implements ItemSea
     public ItemSearchImpl() {
         super(Item.class);
     }
-
     @Override
     public Page<Item> search(Pageable pageable) {
 
@@ -274,6 +273,8 @@ public class ItemSearchImpl extends QuerydslRepositorySupport implements ItemSea
 
         return new PageImpl<>(items, pageable, totalItemCount);
     }
+
+
 
 
 }

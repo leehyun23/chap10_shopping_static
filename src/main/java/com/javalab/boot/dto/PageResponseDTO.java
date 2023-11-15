@@ -76,4 +76,5 @@ public class PageResponseDTO<E> {
         this.prev = this.start > 1;
         this.next =  total > this.end * this.size;
     }
+
 }

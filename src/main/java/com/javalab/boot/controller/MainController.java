@@ -3,6 +3,7 @@ package com.javalab.boot.controller;
 import com.javalab.boot.dto.*;
 import com.javalab.boot.entity.Category;
 import com.javalab.boot.entity.Item;
+import com.javalab.boot.repository.search.ItemSearch;
 import com.javalab.boot.service.CategoryService;
 import com.javalab.boot.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,6 @@ public class MainController {
     private final ItemService itemService;
     private final CategoryService categoryService;
 
-
     // 메인 화면 및 상품 목록 조회
     @GetMapping({"/", "/category"})
     public String list(@PathVariable(required = false) Long categoryId,
@@ -36,28 +36,26 @@ public class MainController {
                        @ModelAttribute("itemSearchDto") ItemSearchDto itemSearchDto,
                        Model model) {
 
-        log.info("getCategoryId : " + itemSearchDto.getCategoryId());
-        // Check if categoryId is provided in the path
+        log.info("카테고리 ID 조회: " + itemSearchDto.getCategoryId());
+
+        // 카테고리 ID가 경로에 제공되는지 확인
         if (categoryId != null) {
-            // Handle logic for when categoryId is provided
-//            List<MainItemDto> categoryItems = itemService.getItemsByCategory(categoryId); // Assuming you have a method like this in your service
-//            model.addAttribute("categoryItems", categoryItems);
+            // 카테고리 ID가 제공될 때의 로직 처리
             PageResponseDTO<MainItemDto> responseDTO = itemService.searchMainPage(pageRequestDTO, itemSearchDto);
             List<MainItemDto> items = responseDTO.getDtoList();
         } else {
-            // Handle logic for the default "/" path
+            // 기본 경로인 "/"에 대한 로직 처리
             PageResponseDTO<MainItemDto> responseDTO = itemService.searchMainPage(pageRequestDTO, itemSearchDto);
             List<MainItemDto> items = responseDTO.getDtoList();
 
-            // Other logic for the default path
-
-            // Add items to the model
+            // 모델에 아이템 추가
             model.addAttribute("responseDTO", responseDTO);
             model.addAttribute("items", items);
-            model.addAttribute("maxPage", 5); // Modify later
+            model.addAttribute("maxPage", 5); // 이후 수정 예정
         }
 
-        // Other common logic
+
+        //슬라이드
         List<SlideDto> slides = Arrays.asList(
                 new SlideDto("images/main01.jpg", "  ", " ", "/item/list"),
                 new SlideDto("images/main02.jpg", " ", " ", "/item/list"),
@@ -72,5 +70,6 @@ public class MainController {
 
         return "main";
     }
+
 
 }

@@ -81,13 +81,17 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemSearch {
     Page<Item> findAllByOrderByIdDesc(Pageable pageable);
 
     // 인기 상품 조회 메서드
-    //Page<Item> findTop6ByOrderBySaleCountDesc(Pageable pageable);
+//    @Query("SELECT i FROM Item i GROUP BY i.saleCount ORDER BY i.saleCount DESC")
+//    Page<Item> findTop6ByOrderBySaleCountDesc(Pageable pageable);
 
     // 최신 상품 조회 메서드
     //Page<Item> findTop6ByOrderByRegisterDateDesc(Pageable pageable);
 
-    // categoryId를 기반으로 아이템을 찾는 메소드를 추가합니다.
-    @Query("SELECT i FROM Item i where i.category= :categoryId")
-    List<Item> findByCategoryId(@Param("categoryId") Long categoryId);
+    //금액 낮은순
+//    @Query("SELECT i FROM Item i ORDER BY i.price ASC")
+//    Page<Item> findTopByOrderByPriceAsc(Pageable pageable);
+//
+//    @Query("SELECT i FROM Item i ORDER BY i.price DESC")
+//    Page<Item> findTopByOrderByPriceDesc(Pageable pageable);
 
 }

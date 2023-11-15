@@ -232,10 +232,5 @@ public class ItemServiceImpl implements ItemService{
 
 
     }
-    @Override
-    public List<Item> getItemsByCategory(Long categoryId) {
-        // categoryId를 이용하여 해당 카테고리에 속하는 상품 목록을 데이터베이스에서 조회하는 로직을 구현
-        return itemRepository.findByCategoryId(categoryId);
-    }
 
 }

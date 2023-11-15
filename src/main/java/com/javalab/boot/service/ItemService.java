@@ -4,7 +4,9 @@ import com.javalab.boot.constant.ItemSellStatus;
 import com.javalab.boot.dto.*;
 import com.javalab.boot.entity.Category;
 import com.javalab.boot.entity.Item;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -28,6 +30,5 @@ public interface ItemService {
     // 메인 화면
     PageResponseDTO<MainItemDto> searchMainPage(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto);
 
-    // 메인 화면에 카타고리 별로 아이템 조회
-    public List<Item> getItemsByCategory(Long categoryId);
+
 }
