@@ -233,4 +233,46 @@ public class ItemServiceImpl implements ItemService{
 
     }
 
+    /**
+     * 상품 가격 낮은순 조회
+     * @param pageRequestDTO
+     * @param itemSearchDto
+     * @return
+     */
+
+    @Override
+    @Transactional(readOnly = true)
+    public PageResponseDTO<MainItemDto> searchMainPageByLowPrice(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto) {
+        // 페이지 요청 정보를 이용해 Pageable 객체 생성
+        Pageable pageable = pageRequestDTO.getPageable("id");
+        // 가격이 낮은 순으로 상품 조회 (검색 조건 적용)
+        Page<Item> itemsByLowPrice = itemRepository.findByOrderByPriceAsc(pageable);
+
+        // Item을 MainItemDto로 변환
+        List<MainItemDto> mainItemDtos = itemsByLowPrice.getContent().stream()
+                .map(item -> modelMapper.map(item, MainItemDto.class)) // Item을 MainItemDto로 변환하는 메소드 호출
+                .collect(Collectors.toList());
+
+        // PageResponseDTO 생성
+        PageResponseDTO<MainItemDto> pageResponseDTO = PageResponseDTO.<MainItemDto>builder()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(mainItemDtos)
+                .total((int) itemsByLowPrice.getTotalElements()) // 전체 상품 수
+                .build();
+
+        return pageResponseDTO;
+    }
+
+
+//
+//    @Override
+//    public PageResponseDTO<MainItemDto> searchMainPageByHighPrice(PageRequestDTO pageRequestDTO) {
+//        // 높은 가격순으로 메인 화면의 상품을 조회하는 로직 구현
+//    }
+//
+//    @Override
+//    public PageResponseDTO<MainItemDto> searchMainPageForNewItems(PageRequestDTO pageRequestDTO) {
+//        // 신상품으로 메인 화면의 상품을 조회하는 로직 구현
+//    }
+
 }

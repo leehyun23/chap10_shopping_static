@@ -30,5 +30,13 @@ public interface ItemService {
     // 메인 화면
     PageResponseDTO<MainItemDto> searchMainPage(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto);
 
+    //Category 메소드
+
+
+    PageResponseDTO<MainItemDto> searchMainPageByLowPrice(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto);
+
+//    PageResponseDTO<MainItemDto> searchMainPageByHighPrice(PageRequestDTO pageRequestDTO);
+//
+//    PageResponseDTO<MainItemDto> searchMainPageForNewItems(PageRequestDTO pageRequestDTO);
 
 }

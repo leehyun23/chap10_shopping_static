@@ -1,6 +1,7 @@
 package com.javalab.boot.repository;
 
 import com.javalab.boot.constant.ItemSellStatus;
+import com.javalab.boot.dto.PageRequestDTO;
 import com.javalab.boot.entity.Board;
 import com.javalab.boot.entity.Category;
 import com.javalab.boot.entity.Item;
@@ -74,24 +75,20 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemSearch {
     @Query("SELECT i.itemSellStatus FROM Item i GROUP BY i.itemSellStatus")
     List<ItemSellStatus> findSellStatus();
     // 카타고리를 그룹화 하여 가져오는 쿼리
-    @Query("SELECT c FROM Category c")
-    List<Category> findCategory();
+
+
     // 추가 - 메인 화면 구성용
-    // 모든 상품을 최신 입고일 순으로 조회하는 메서드
+
+
+    //가격 낮은순 조회 메소드
+    @Query("SELECT item FROM Item item ORDER BY item.price DESC")
     Page<Item> findAllByOrderByIdDesc(Pageable pageable);
+    
+    //가격 낮은순 조회 메소드
+    @Query("SELECT item FROM Item item ORDER BY item.price ASC")
+    Page<Item> findByOrderByPriceAsc(Pageable pageable);
 
-    // 인기 상품 조회 메서드
-//    @Query("SELECT i FROM Item i GROUP BY i.saleCount ORDER BY i.saleCount DESC")
-//    Page<Item> findTop6ByOrderBySaleCountDesc(Pageable pageable);
 
-    // 최신 상품 조회 메서드
-    //Page<Item> findTop6ByOrderByRegisterDateDesc(Pageable pageable);
-
-    //금액 낮은순
-//    @Query("SELECT i FROM Item i ORDER BY i.price ASC")
-//    Page<Item> findTopByOrderByPriceAsc(Pageable pageable);
-//
-//    @Query("SELECT i FROM Item i ORDER BY i.price DESC")
-//    Page<Item> findTopByOrderByPriceDesc(Pageable pageable);
-
+//    // 모든 상품을 최신 입고일 순으로 조회하는 메서드
+//    List<Item> findNewItems();
 }

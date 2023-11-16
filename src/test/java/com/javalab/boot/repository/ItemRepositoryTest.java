@@ -390,4 +390,16 @@ public class ItemRepositoryTest {
         assertTrue(result.getContent().size() > 0);
 
     }
+    @Disabled
+    @Test
+    public void testFindByOrderByPriceAsc() {
+        // 페이지네이션 설정
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("price").ascending());
+
+        // 테스트할 메서드 실행
+        Page<Item> items = itemRepository.findByOrderByPriceAsc(pageable);
+
+        // 테스트 결과 확인
+        assertThat(items).isNotEmpty();
+    }
 }

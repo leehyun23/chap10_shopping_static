@@ -30,6 +30,8 @@ public class ItemSearchDto {
 
     private Long categoryId;
 
+    private String sort;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate receiptDateFrom;
 
