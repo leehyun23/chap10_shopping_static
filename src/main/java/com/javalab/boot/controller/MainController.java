@@ -2,8 +2,6 @@ package com.javalab.boot.controller;
 
 import com.javalab.boot.dto.*;
 import com.javalab.boot.entity.Category;
-import com.javalab.boot.entity.Item;
-import com.javalab.boot.repository.search.ItemSearch;
 import com.javalab.boot.service.CategoryService;
 import com.javalab.boot.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,9 +42,6 @@ public class MainController {
             PageResponseDTO<MainItemDto> responseDTO = itemService.searchMainPage(pageRequestDTO, itemSearchDto);
             List<MainItemDto> items = responseDTO.getDtoList();
             log.info("카테고리 ID 조회: " + itemSearchDto.getCategoryId());
-//        }else if(sort != null) {
-//            PageResponseDTO<MainItemDto> responseDTO = itemService.searchMainPage(pageRequestDTO, itemSearchDto);
-//            List<MainItemDto> items = responseDTO.getDtoList();
     }else {
             // 기본 경로인 "/"에 대한 로직 처리
             PageResponseDTO<MainItemDto> responseDTO = itemService.searchMainPage(pageRequestDTO, itemSearchDto);
@@ -82,42 +76,28 @@ public class MainController {
         return "main";
     }
 
-    // 상품 조회 - 낮은 가격순
     @GetMapping("/items/low-price")
     public String listByLowPrice(Model model, PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto, String sort) {
         // 매인화면 상품
-        PageResponseDTO<MainItemDto> responseDTO = itemService.searchMainPage(pageRequestDTO, itemSearchDto);
+        PageResponseDTO<MainItemDto> responseDTO = itemService.searchMainPageByLowPrice(pageRequestDTO, itemSearchDto);
         List<MainItemDto> items = responseDTO.getDtoList();
-
 
         // 모델에 아이템 추가
         model.addAttribute("responseDTO", responseDTO);
-        model.addAttribute("items", items);
         model.addAttribute("maxPage", 5); // 이후 수정 예정
 
-    //슬라이드
-    List<SlideDto> slides = Arrays.asList(
-            new SlideDto("images/main01.jpg", "  ", " ", "/item/list"),
-            new SlideDto("images/main02.jpg", " ", " ", "/item/list"),
-            new SlideDto("images/main03.jpg", " ", " ", "/item/list"),
-            new SlideDto("images/main04.jpg", " ", " ", "/item/list"),
-            new SlideDto("images/main05.jpg", "  ", " ", "/item/list")
-    );
 
-        model.addAttribute("slides", slides);
+        List<Category> categories = categoryService.getCategoryOptions();
+        model.addAttribute("categories", categories);
 
-
-
-
-    // 가격이 낮은 순으로 상품 조회 (검색 조건 적용)
+        // 가격이 낮은 순으로 상품 조회 (검색 조건 적용)
         PageResponseDTO<MainItemDto> pageResponseDTO = itemService.searchMainPageByLowPrice(pageRequestDTO, itemSearchDto);
-        log.info("pageResponseDTO :" +pageResponseDTO);
-        // 반환된 페이지 응답 객체에서 상품 목록 가져오기
         List<MainItemDto> itemsByLowPrice = pageResponseDTO.getDtoList();
-        log.info("itemsByLowPrice" + itemsByLowPrice);
+
+
         model.addAttribute("items", itemsByLowPrice);
+
         return "main";
     }
-
 
 }

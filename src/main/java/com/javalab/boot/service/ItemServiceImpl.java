@@ -4,6 +4,7 @@ import com.javalab.boot.constant.ItemSellStatus;
 import com.javalab.boot.dto.*;
 import com.javalab.boot.entity.Category;
 import com.javalab.boot.entity.Item;
+import com.javalab.boot.entity.ItemImg;
 import com.javalab.boot.repository.CategoryRepository;
 import com.javalab.boot.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,6 @@ public class ItemServiceImpl implements ItemService{
     // 생성자 의존성 주입됨.
     private final ItemRepository itemRepository;
     private final ModelMapper modelMapper;
-    private final CategoryRepository categoryRepository;
     /**
      * Item 등록
      */
@@ -182,7 +182,6 @@ public class ItemServiceImpl implements ItemService{
         List<ItemFormDTO> dtoList = result.getContent().stream()
                 .map(item -> modelMapper.map(item, ItemFormDTO.class))
                 .collect(Collectors.toList());
-
         // 변환시킨 Dto, PageRequest 등을 PageResponseDTO 저장
         PageResponseDTO<ItemFormDTO> pageResponseDTO = PageResponseDTO.<ItemFormDTO>builder()
                 .pageRequestDTO(pageRequestDTO)
@@ -246,12 +245,28 @@ public class ItemServiceImpl implements ItemService{
         // 페이지 요청 정보를 이용해 Pageable 객체 생성
         Pageable pageable = pageRequestDTO.getPageable("id");
         // 가격이 낮은 순으로 상품 조회 (검색 조건 적용)
-        Page<Item> itemsByLowPrice = itemRepository.findByOrderByPriceAsc(pageable);
-
+        Page<Object[]> itemsByLowPrice = itemRepository.findByOrderByPriceAscWithUuid(pageable);
         // Item을 MainItemDto로 변환
         List<MainItemDto> mainItemDtos = itemsByLowPrice.getContent().stream()
-                .map(item -> modelMapper.map(item, MainItemDto.class)) // Item을 MainItemDto로 변환하는 메소드 호출
+                .map(itemArray -> {
+                    Item item = (Item) itemArray[0];
+                    String fileName = (String) itemArray[1];
+                    String uuid = (String) itemArray[2];
+
+                    MainItemDto mainItemDto = MainItemDto.builder()
+                            .id(item.getId())
+                            .itemNm(item.getItemNm())
+                            .itemDetail(item.getItemDetail())
+                            .price(item.getPrice())
+                            .uuid(uuid)
+                            .fileName(fileName)
+                            .build();
+
+                     //log.info("mainItemDto :" + mainItemDto.getFileName() + " " + mainItemDto.getUuid() + " " + mainItemDto.getImgUrl());
+                    return mainItemDto;
+                })
                 .collect(Collectors.toList());
+
 
         // PageResponseDTO 생성
         PageResponseDTO<MainItemDto> pageResponseDTO = PageResponseDTO.<MainItemDto>builder()
@@ -259,9 +274,10 @@ public class ItemServiceImpl implements ItemService{
                 .dtoList(mainItemDtos)
                 .total((int) itemsByLowPrice.getTotalElements()) // 전체 상품 수
                 .build();
-
         return pageResponseDTO;
     }
+
+
 
 
 //

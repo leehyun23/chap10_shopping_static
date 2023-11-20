@@ -85,9 +85,11 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemSearch {
     Page<Item> findAllByOrderByIdDesc(Pageable pageable);
     
     //가격 낮은순 조회 메소드
-    @Query("SELECT item FROM Item item ORDER BY item.price ASC")
-    Page<Item> findByOrderByPriceAsc(Pageable pageable);
+//    @Query("SELECT item FROM Item item ORDER BY item.price ASC")
+//    Page<Item> findByOrderByPriceAsc(Pageable pageable);
 
+    @Query("SELECT item, img.fileName, img.uuid FROM Item item LEFT JOIN item.imageSet img ORDER BY item.price ASC")
+    Page<Object[]> findByOrderByPriceAscWithUuid(Pageable pageable);
 
 //    // 모든 상품을 최신 입고일 순으로 조회하는 메서드
 //    List<Item> findNewItems();

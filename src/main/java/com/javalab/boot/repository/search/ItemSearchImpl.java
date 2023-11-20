@@ -254,24 +254,51 @@ public class ItemSearchImpl extends QuerydslRepositorySupport implements ItemSea
      * @param itemSearchDto
      */
     @Override
-    public Page<Item> searchByComplexConditions(Pageable pageable, ItemSearchDto itemSearchDto) {
+    public Page<MainItemDto> searchByComplexConditions(Pageable pageable, ItemSearchDto itemSearchDto) {
         QItem qItem = QItem.item;
-        JPQLQuery<Item> query = from(qItem);
+        QItemImg qItemImg = QItemImg.itemImg;
 
-        BooleanBuilder conditionBuilder = new BooleanBuilder();
+        JPQLQuery<MainItemDto> query = from(qItem)
+                .leftJoin(qItemImg).on(qItem.eq(qItemImg.item).and(qItemImg.repimgYn.eq("Y")))
+                .select(Projections.bean(
+                        MainItemDto.class,
+                        qItem.id,
+                        qItem.itemNm,
+                        qItem.itemDetail,
+                        qItem.price,
+                        qItemImg.uuid,
+                        qItemImg.fileName)
+                );
+        BooleanBuilder 조회조건Builder = new BooleanBuilder();
 
-        // ... ItemSearchDto의 조건을 바탕으로 conditionBuilder를 구성합니다 ...
+        if (itemSearchDto.getItemNm() != null) {
+            조회조건Builder.and(qItem.itemNm.like("%" + itemSearchDto.getItemNm() + "%"));
+        }
+        // 상품 상세 설명(Like 검색)
+        if (itemSearchDto.getItemDetail() != null) {
+            조회조건Builder.and(qItem.itemDetail.contains(itemSearchDto.getItemDetail()));
+        }
 
-        query.where(conditionBuilder);
 
-        // 페이징 처리
+        query.where(조회조건Builder);
+        // 쿼리 객체에 and 조건 설정
+        query.where(qItem.id.gt(0L));
+        // 카타고리 아이디 조건이 있을경우
+        if (itemSearchDto.getCategoryId() != null) {
+            log.info("itemSearchDto.getCategoryId():" + itemSearchDto.getCategoryId());
+            query.where(qItem.category.id.eq(itemSearchDto.getCategoryId()));
+        }
+        // 현재 쿼리 객체에 페이징 조건 설정
         this.getQuerydsl().applyPagination(pageable, query);
+        // 만들어진 쿼리 객체 실행해서 결과 받아옴
+        List<MainItemDto> list = query.fetch();
+        // 조건과 일치하는 결과 행수 조회
+        long count = query.fetchCount();
+        // 데이터베이스에서 받아온 데이터와 페이징 조건, 결과 행수로
+        // Page객체 생성해서 반환
+        log.info("get Uuid + getFileName :"+list.get(0).getUuid() + list.get(0).getFileName());
+        return new PageImpl<>(list, pageable, count);
 
-        // 결과 가져오기
-        List<Item> items = query.fetch();
-        long totalItemCount = query.fetchCount();
-
-        return new PageImpl<>(items, pageable, totalItemCount);
     }
 
 

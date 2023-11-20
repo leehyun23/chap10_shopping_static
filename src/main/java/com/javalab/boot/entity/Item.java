@@ -4,6 +4,7 @@ import com.javalab.boot.constant.ItemSellStatus;
 import com.javalab.boot.dto.ItemFormDTO;
 import com.javalab.boot.exception.OutOfStockException;
 import lombok.*;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.annotations.BatchSize;
 import org.modelmapper.ModelMapper;
 
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @ToString
-@Builder
+@Builder @Log4j2
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item extends BaseEntity {
@@ -123,8 +124,7 @@ public class Item extends BaseEntity {
                 .price(this.getPrice())
                 .stockNumber(this.getStockNumber())
                 .receiptDate(this.getReceiptDate())
-//                .categoryId(this.category.builder().id(itemFormDto.getCategoryId()))
-
+                .fileNames(this.getImageSet().stream().sorted().map(ItemImg::getUuid).collect(Collectors.toList()))
                 .build();
 
         // 데이터베이스에 받아온 이미지들을 Dto로 이동
@@ -134,7 +134,9 @@ public class Item extends BaseEntity {
                                 + itemImg.getFileName()
                 ).collect(Collectors.toList());
         itemFormDTO.setFileNames(fileNames);
-
+        log.info("Filename :" + fileNames);
         return itemFormDTO;
     }
+
+
 }
