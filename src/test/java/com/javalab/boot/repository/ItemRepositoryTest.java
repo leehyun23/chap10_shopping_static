@@ -364,7 +364,7 @@ public class ItemRepositoryTest {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("id").descending());
 
         // 메소드 호출
-        Page<Item> page = itemRepository.findAllByOrderByIdDesc(pageRequest);
+        Page<Object[]> page = itemRepository.findByOrderByPriceDescWithUuid(pageRequest);
         page.getContent().forEach(item -> log.info(item.toString()));
 
         assertThat(page).isNotEmpty();
@@ -397,7 +397,7 @@ public class ItemRepositoryTest {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("price").ascending());
 
         // 테스트할 메서드 실행
-        Page<Item> items = itemRepository.findByOrderByPriceAsc(pageable);
+        Page<Object[]> items = itemRepository.findByOrderByPriceAscWithUuid(pageable);
 
         // 테스트 결과 확인
         assertThat(items).isNotEmpty();

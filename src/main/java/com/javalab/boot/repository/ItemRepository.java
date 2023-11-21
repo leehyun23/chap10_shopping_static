@@ -74,23 +74,13 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemSearch {
     // 판매 상태(SellStatus)를 그룹화하여 가져오는 쿼리
     @Query("SELECT i.itemSellStatus FROM Item i GROUP BY i.itemSellStatus")
     List<ItemSellStatus> findSellStatus();
-    // 카타고리를 그룹화 하여 가져오는 쿼리
 
+    //가격 높은순 조회 메소드
+    @Query("SELECT item, img.fileName, img.uuid FROM Item item LEFT JOIN item.imageSet img ORDER BY item.price DESC")
+    Page<Object[]> findByOrderByPriceDescWithUuid(Pageable pageable);
 
-    // 추가 - 메인 화면 구성용
-
-
-    //가격 낮은순 조회 메소드
-    @Query("SELECT item FROM Item item ORDER BY item.price DESC")
-    Page<Item> findAllByOrderByIdDesc(Pageable pageable);
-    
-    //가격 낮은순 조회 메소드
-//    @Query("SELECT item FROM Item item ORDER BY item.price ASC")
-//    Page<Item> findByOrderByPriceAsc(Pageable pageable);
-
+//    가격 낮은순 조회 메소드
     @Query("SELECT item, img.fileName, img.uuid FROM Item item LEFT JOIN item.imageSet img ORDER BY item.price ASC")
     Page<Object[]> findByOrderByPriceAscWithUuid(Pageable pageable);
 
-//    // 모든 상품을 최신 입고일 순으로 조회하는 메서드
-//    List<Item> findNewItems();
 }

@@ -32,11 +32,9 @@ public interface ItemService {
 
     //Category 메소드
 
+    PageResponseDTO<MainItemDto> searchMainPageByHighPrice(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto);
 
     PageResponseDTO<MainItemDto> searchMainPageByLowPrice(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto);
 
-//    PageResponseDTO<MainItemDto> searchMainPageByHighPrice(PageRequestDTO pageRequestDTO);
-//
-//    PageResponseDTO<MainItemDto> searchMainPageForNewItems(PageRequestDTO pageRequestDTO);
 
 }

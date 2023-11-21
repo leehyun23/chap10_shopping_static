@@ -100,4 +100,28 @@ public class MainController {
         return "main";
     }
 
+    @GetMapping("/items/high-price")
+    public String listByHighPrice(Model model, PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto) {
+        // 매인화면 상품
+        PageResponseDTO<MainItemDto> responseDTO = itemService.searchMainPageByHighPrice(pageRequestDTO, itemSearchDto);
+        List<MainItemDto> items = responseDTO.getDtoList();
+
+        // 모델에 아이템 추가
+        model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("maxPage", 5); // 이후 수정 예정
+
+
+        List<Category> categories = categoryService.getCategoryOptions();
+        model.addAttribute("categories", categories);
+
+        // 가격이 높은 순으로 상품 조회 (검색 조건 적용)
+        PageResponseDTO<MainItemDto> pageResponseDTO = itemService.searchMainPageByHighPrice(pageRequestDTO, itemSearchDto);
+        List<MainItemDto> itemsByHighPrice = pageResponseDTO.getDtoList();
+
+
+        model.addAttribute("items", itemsByHighPrice);
+
+        return "main";
+    }
+
 }

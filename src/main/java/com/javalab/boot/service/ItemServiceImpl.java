@@ -244,7 +244,7 @@ public class ItemServiceImpl implements ItemService{
     public PageResponseDTO<MainItemDto> searchMainPageByLowPrice(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto) {
         // 페이지 요청 정보를 이용해 Pageable 객체 생성
         Pageable pageable = pageRequestDTO.getPageable("id");
-        // 가격이 낮은 순으로 상품 조회 (검색 조건 적용)
+        // 가격이 높은 순으로 상품 조회 (검색 조건 적용)
         Page<Object[]> itemsByLowPrice = itemRepository.findByOrderByPriceAscWithUuid(pageable);
         // Item을 MainItemDto로 변환
         List<MainItemDto> mainItemDtos = itemsByLowPrice.getContent().stream()
@@ -277,18 +277,42 @@ public class ItemServiceImpl implements ItemService{
         return pageResponseDTO;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public PageResponseDTO<MainItemDto> searchMainPageByHighPrice(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto) {
+        // 페이지 요청 정보를 이용해 Pageable 객체 생성
+        Pageable pageable = pageRequestDTO.getPageable("id");
+        // 가격이 높은 순으로 상품 조회 (검색 조건 적용)
+        Page<Object[]> itemsByHighPrice = itemRepository.findByOrderByPriceDescWithUuid(pageable);
+        // Item을 MainItemDto로 변환
+        List<MainItemDto> mainItemDtos = itemsByHighPrice.getContent().stream()
+                .map(itemArray -> {
+                    Item item = (Item) itemArray[0];
+                    String fileName = (String) itemArray[1];
+                    String uuid = (String) itemArray[2];
+
+                    MainItemDto mainItemDto = MainItemDto.builder()
+                            .id(item.getId())
+                            .itemNm(item.getItemNm())
+                            .itemDetail(item.getItemDetail())
+                            .price(item.getPrice())
+                            .uuid(uuid)
+                            .fileName(fileName)
+                            .build();
+
+                    //log.info("mainItemDto :" + mainItemDto.getFileName() + " " + mainItemDto.getUuid() + " " + mainItemDto.getImgUrl());
+                    return mainItemDto;
+                })
+                .collect(Collectors.toList());
 
 
-
-//
-//    @Override
-//    public PageResponseDTO<MainItemDto> searchMainPageByHighPrice(PageRequestDTO pageRequestDTO) {
-//        // 높은 가격순으로 메인 화면의 상품을 조회하는 로직 구현
-//    }
-//
-//    @Override
-//    public PageResponseDTO<MainItemDto> searchMainPageForNewItems(PageRequestDTO pageRequestDTO) {
-//        // 신상품으로 메인 화면의 상품을 조회하는 로직 구현
-//    }
+        // PageResponseDTO 생성
+        PageResponseDTO<MainItemDto> pageResponseDTO = PageResponseDTO.<MainItemDto>builder()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(mainItemDtos)
+                .total((int) itemsByHighPrice.getTotalElements()) // 전체 상품 수
+                .build();
+        return pageResponseDTO;
+    }
 
 }
