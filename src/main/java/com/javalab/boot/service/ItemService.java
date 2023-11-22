@@ -2,7 +2,11 @@ package com.javalab.boot.service;
 
 import com.javalab.boot.constant.ItemSellStatus;
 import com.javalab.boot.dto.*;
+import com.javalab.boot.entity.Category;
+import com.javalab.boot.entity.Item;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -21,7 +25,16 @@ public interface ItemService {
     // sellStatus 그룹바이 결과 조회
     List<ItemSellStatus> getSellStatusOptions();
 
+
+
     // 메인 화면
     PageResponseDTO<MainItemDto> searchMainPage(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto);
+
+    //Category 메소드
+
+    PageResponseDTO<MainItemDto> searchMainPageByHighPrice(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto);
+
+    PageResponseDTO<MainItemDto> searchMainPageByLowPrice(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto);
+
 
 }

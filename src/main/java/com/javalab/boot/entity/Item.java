@@ -1,10 +1,10 @@
 package com.javalab.boot.entity;
 
 import com.javalab.boot.constant.ItemSellStatus;
-import com.javalab.boot.dto.BoardDTO;
 import com.javalab.boot.dto.ItemFormDTO;
 import com.javalab.boot.exception.OutOfStockException;
 import lombok.*;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.annotations.BatchSize;
 import org.modelmapper.ModelMapper;
 
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @ToString
-@Builder
+@Builder @Log4j2
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item extends BaseEntity {
@@ -30,6 +30,8 @@ public class Item extends BaseEntity {
     @Column(name="item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;       //상품 코드
+
+
 
     @Column(nullable = false, length = 50)
     private String itemNm; //상품명
@@ -54,6 +56,10 @@ public class Item extends BaseEntity {
     private Double dcRate; // 할인율
     private Integer saleCount; // 판매수량(인기상품 판단)
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;// 카테고리
+
     @OneToMany(mappedBy = "item",
             cascade = {CascadeType.ALL},
             fetch = FetchType.LAZY,
@@ -72,6 +78,8 @@ public class Item extends BaseEntity {
         this.itemDetail = itemFormDto.getItemDetail();
         this.itemSellStatus = itemFormDto.getItemSellStatus();
         this.receiptDate = itemFormDto.getReceiptDate();
+        this.category = Category.builder()
+                .id(itemFormDto.getCategoryId()).build();
     }
 
     // 첨부 이미지 추가
@@ -116,6 +124,7 @@ public class Item extends BaseEntity {
                 .price(this.getPrice())
                 .stockNumber(this.getStockNumber())
                 .receiptDate(this.getReceiptDate())
+                .fileNames(this.getImageSet().stream().sorted().map(ItemImg::getUuid).collect(Collectors.toList()))
                 .build();
 
         // 데이터베이스에 받아온 이미지들을 Dto로 이동
@@ -125,7 +134,9 @@ public class Item extends BaseEntity {
                                 + itemImg.getFileName()
                 ).collect(Collectors.toList());
         itemFormDTO.setFileNames(fileNames);
-
+        log.info("Filename :" + fileNames);
         return itemFormDTO;
     }
+
+
 }

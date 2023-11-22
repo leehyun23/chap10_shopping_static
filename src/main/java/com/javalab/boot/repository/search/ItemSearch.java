@@ -19,8 +19,10 @@ public interface ItemSearch {
     Page<Item> searchItems(Pageable pageable, ItemSearchDto itemSearchDto);
 
     // 추가 메인화면용
-    Page<Item> searchByComplexConditions(Pageable pageable, ItemSearchDto itemSearchDto);
+    Page<MainItemDto> searchByComplexConditions(Pageable pageable, ItemSearchDto itemSearchDto);
 
     // 추가 메인화면용
     Page<MainItemDto> searchMainPage(Pageable pageable, ItemSearchDto itemSearchDto);
+
+
 }

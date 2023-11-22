@@ -1,7 +1,9 @@
 package com.javalab.boot.repository;
 
 import com.javalab.boot.constant.ItemSellStatus;
+import com.javalab.boot.dto.PageRequestDTO;
 import com.javalab.boot.entity.Board;
+import com.javalab.boot.entity.Category;
 import com.javalab.boot.entity.Item;
 import com.javalab.boot.repository.search.ItemSearch;
 import org.springframework.data.domain.Page;
@@ -73,15 +75,12 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemSearch {
     @Query("SELECT i.itemSellStatus FROM Item i GROUP BY i.itemSellStatus")
     List<ItemSellStatus> findSellStatus();
 
+    //가격 높은순 조회 메소드
+    @Query("SELECT item, img.fileName, img.uuid FROM Item item LEFT JOIN item.imageSet img ORDER BY item.price DESC")
+    Page<Object[]> findByOrderByPriceDescWithUuid(Pageable pageable);
 
-    // 추가 - 메인 화면 구성용
-    // 모든 상품을 최신 입고일 순으로 조회하는 메서드
-    Page<Item> findAllByOrderByIdDesc(Pageable pageable);
-
-    // 인기 상품 조회 메서드
-    //Page<Item> findTop6ByOrderBySaleCountDesc(Pageable pageable);
-
-    // 최신 상품 조회 메서드
-    //Page<Item> findTop6ByOrderByRegisterDateDesc(Pageable pageable);
+//    가격 낮은순 조회 메소드
+    @Query("SELECT item, img.fileName, img.uuid FROM Item item LEFT JOIN item.imageSet img ORDER BY item.price ASC")
+    Page<Object[]> findByOrderByPriceAscWithUuid(Pageable pageable);
 
 }

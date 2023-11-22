@@ -1,12 +1,14 @@
 package com.javalab.boot.dto;
 
 import com.javalab.boot.entity.ItemImg;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.modelmapper.ModelMapper;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemImgDTO {
 
     private Long id;

@@ -2,6 +2,8 @@ package com.javalab.boot.controller;
 
 import com.javalab.boot.constant.ItemSellStatus;
 import com.javalab.boot.dto.ItemFormDTO;
+import com.javalab.boot.entity.Category;
+import com.javalab.boot.service.CategoryService;
 import com.javalab.boot.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,7 +23,7 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
-
+    private final CategoryService categoryService;
     /**
      * 공통메소드
      *  - ItemSellStatus enum 타입
