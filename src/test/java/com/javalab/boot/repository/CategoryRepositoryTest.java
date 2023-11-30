@@ -1,10 +1,7 @@
 package com.javalab.boot.repository;
 
-import com.javalab.boot.constant.ItemSellStatus;
 import com.javalab.boot.entity.Category;
-import com.javalab.boot.entity.Item;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,6 @@
 package com.javalab.boot.repository;
 
 import com.javalab.boot.entity.Category;
-import com.javalab.boot.entity.Item;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

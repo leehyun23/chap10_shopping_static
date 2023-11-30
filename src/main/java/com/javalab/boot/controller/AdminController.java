@@ -31,63 +31,22 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class AdminController {
-
     private final ItemService itemService;
     private final CategoryService categoryService;
-    /**
-     * 공통메소드
-     *  - ItemSellStatus enum 타입
-     *  - sellStatus라는 이름으로 판매상태 정보를 세팅해서 Model에 저장해줌.
-     *  - 화면에서는 리턴하는 sellStatus 라는 이름으로 꺼내 쓸 수 있음.
-     */
-    @ModelAttribute("sellStatus")
-    public List<ItemSellStatus> getSellStatus() {
-        // 데이터베이스에서 판매 상태 값을 읽어옵니다.
-        List<ItemSellStatus> sellStatus = itemService.getSellStatusOptions();
-        log.info("sellStatus.size() : " + sellStatus.size());
-        return sellStatus;
-    }
-
-    /**
-     * 상품 등록폼 오픈 메소드
-     *  - @PreAuthorize : 메서드에 대한 인가 설정
-     *  - 시큐리티 환경설정에 안해도 됨.
-     */
-    //@PreAuthorize("hasRole('ADMIN')") // 등록은 관리자만 가능하도록 설정
-    @GetMapping("/register")
-    public String registerForm(Model model) {
-        // 데이터베이스에서 카테고리 값을 읽어옵니다.
-        List<Category> categories = categoryService.getCategoryOptions();
-
-        log.info("category : " + categories.size());
-        model.addAttribute("categories", categories);
-        model.addAttribute("itemFormDTO", new ItemFormDTO());
-        return "item/register";
-    }
-
     @PostMapping("/register")
     public String register(@Valid ItemFormDTO itemFormDTO,
                            BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes,
-                           Model model) {
-
-        log.info("itemFormDTO : " + itemFormDTO);
-
+                           RedirectAttributes redirectAttributes, Model model) {
         if(bindingResult.hasErrors()) {
-            log.info("등록 화면 오류 있음");
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "item/register";
         }
         Long itemId = itemService.register(itemFormDTO);
         return "redirect:/admin/item/list";
     }
-
-    // 복잡한 조건으로 상품 조회
     @GetMapping("/list")
     public String list(@ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO,
-                       @ModelAttribute("itemSearchDto") ItemSearchDto itemSearchDto,
-                       Model model) {
-
+                       @ModelAttribute("itemSearchDto") ItemSearchDto itemSearchDto, Model model) {
         log.info("ItemSearchDto: " + itemSearchDto.toString());
         PageResponseDTO<ItemFormDTO> responseDTO = itemService.searchList(pageRequestDTO, itemSearchDto);
         model.addAttribute("responseDTO", responseDTO);
@@ -100,30 +59,15 @@ public class AdminController {
                        Model model) {
         ItemFormDTO itemFormDTO = itemService.readOne(id);
         List<Category> categories = categoryService.getCategoryOptions();
-        log.info("category read : " + categories);
         model.addAttribute("categories", categories);
         model.addAttribute("item", itemFormDTO);
         return "item/read";
     }
-
-    //@PreAuthorize("hasRole('ADMIN')") // 상품 수정도 관리자만 가능하도록 설정
-    @GetMapping({"/modify"})
-    public String modifyGet(Long id, @ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO, Model model) {
-        ItemFormDTO itemFormDTO = itemService.readOne(id);
-        List<Category> categories = categoryService.getCategoryOptions();
-        model.addAttribute("categories", categories);
-        model.addAttribute("item", itemFormDTO);
-        return "item/modify";
-    }
-
     @PostMapping("/modify")
     public String modify(PageRequestDTO pageRequestDTO,
                          @Valid @ModelAttribute("item") ItemFormDTO itemFormDTO,
                          BindingResult bindingResult,
                          Model model) {
-
-        log.info("itemFormDTO : " + itemFormDTO);
-
         if(bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "item/modify"; // 수정폼으로 다시 이동

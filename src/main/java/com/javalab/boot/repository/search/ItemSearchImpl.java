@@ -43,19 +43,14 @@ public class ItemSearchImpl extends QuerydslRepositorySupport implements ItemSea
 
         QItem qItem = QItem.item;
 
-        // from 메서드를 사용하여 Item 엔티티에 대한 JPQL 쿼리를 초기화
         JPQLQuery<Item> query = from(qItem);
 
-        // Querydsl에 제공될 조건문을 동적으로 생성할 수 있는 빌더 클래스
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
-        // or 상품명 or 상품상세설명 필드 Like 검색 조건 생성
         booleanBuilder.or(qItem.itemNm.contains("상품")); // 상품명 like ...
         booleanBuilder.or(qItem.itemDetail.contains("상품")); // 상품상세설명 like ....
 
-        // where or 조건
         query.where(booleanBuilder);
-        // where and 조건
         query.where(qItem.id.gt(0L));
 
         /*

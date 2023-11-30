@@ -18,14 +18,13 @@ public interface ItemService {
 
 //    PageResponseDTO<ItemFormDTO> list(PageRequestDTO pageRequestDTO);
     PageResponseDTO<ItemFormDTO> list(PageRequestDTO pageRequestDTO);
-
     // 변경
     PageResponseDTO<ItemFormDTO> searchList(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto);
 
+
+
     // sellStatus 그룹바이 결과 조회
     List<ItemSellStatus> getSellStatusOptions();
-
-
 
     // 메인 화면
     PageResponseDTO<MainItemDto> searchMainPage(PageRequestDTO pageRequestDTO, ItemSearchDto itemSearchDto);

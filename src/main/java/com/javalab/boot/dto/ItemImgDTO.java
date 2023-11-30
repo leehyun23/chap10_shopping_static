@@ -10,7 +10,6 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemImgDTO {
-
     private Long id;
     // 상품 이미지명
     private String imgName;
@@ -20,7 +19,6 @@ public class ItemImgDTO {
     private String imgUrl;
     // 대표이미지 여부
     private String repImgYn;
-
     // 모델매퍼
     private static ModelMapper modelMapper = new ModelMapper();
 
