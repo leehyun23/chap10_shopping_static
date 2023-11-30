@@ -44,7 +44,7 @@ public class ItemController {
     public String itemDtl(Model model, @PathVariable("itemId") Long itemId){
         ItemFormDTO itemFormDto = itemService.readOne(itemId);
         model.addAttribute("item", itemFormDto);
-        return "/item/itemDetail";
+        return "item/itemDetail";
     }
 
 }
