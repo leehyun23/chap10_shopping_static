@@ -66,7 +66,7 @@ public class MemberController {
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
 
-        return "/member/login";
+        return "member/login";
     }
 
 
