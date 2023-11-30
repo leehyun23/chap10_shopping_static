@@ -76,7 +76,7 @@ public class BoardController {
 
         log.info(responseDTO);
         model.addAttribute("responseDTO", responseDTO);
-        return "/board/list";
+        return "board/list";
     }
 
     // 회원등록폼
@@ -121,7 +121,7 @@ public class BoardController {
         BoardDTO boardDTO = boardService.readOne(bno);
         log.info(boardDTO);
         model.addAttribute("board", boardDTO);
-        return "/board/read";
+        return "board/read";
     }
 
     /**
@@ -140,7 +140,7 @@ public class BoardController {
     public String modifyGet(@RequestParam("bno") Long bno, PageRequestDTO pageRequestDTO, Model model){
         BoardDTO boardDTO = boardService.readOne(bno);
         model.addAttribute("board", boardDTO);
-        return "/board/modify";
+        return "board/modify";
     }
 
     /**
